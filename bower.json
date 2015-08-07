@@ -1,0 +1,28 @@
+{
+  "name": "aenima",
+  "version": "0.0.0",
+  "homepage": "https://github.com/jeremyckahn/aenima",
+  "authors": [
+    "Jeremy Kahn <jeremyckahn@gmail.com>"
+  ],
+  "description": "A Lateralus component library for animation apps",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "lateralus",
+    "stylie",
+    "mantra"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "lateralus": "~0.8.0"
+  }
+}
