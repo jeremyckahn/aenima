@@ -23,6 +23,10 @@
     "tests"
   ],
   "dependencies": {
+    "lateralus": "~0.8.0",
+    "lateralus-components": "~0.0.9"
+  },
+  "resolutions": {
     "lateralus": "~0.8.0"
   }
 }

@@ -113,8 +113,7 @@ define([
 
     ,renderCss: function () {
       var cssOpts = this.collectOne('cssConfigObject');
-
-      var css = this.lateralus.rekapiComponent.getCssString(cssOpts);
+      var css = this.collectOne('cssAnimationString', cssOpts);
       this.$generatedCss.val(css);
     }
 
