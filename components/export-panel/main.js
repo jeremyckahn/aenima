@@ -3,6 +3,7 @@ define([
   'lateralus'
 
   ,'./view'
+  ,'./model'
   ,'text!./template.mustache'
 
   ,'aenima.component.css-export-panel'
@@ -13,6 +14,7 @@ define([
   Lateralus
 
   ,View
+  ,Model
   ,template
 
   ,CssExportPanelComponent
@@ -26,12 +28,15 @@ define([
   var ExportPanelComponent = Base.extend({
     name: 'export-panel'
     ,View: View
+    ,Model: Model
     ,template: template
 
     ,initialize: function () {
       this.cssExportPanelComponent = this.addComponent(
           CssExportPanelComponent, {
         el: this.view.$cssExportPanel[0]
+      }, {
+        modelAttributes: this.model.pick('cssExportClass', 'analyticsUrl')
       });
 
       this.rekapiExportPanelComponent = this.addComponent(

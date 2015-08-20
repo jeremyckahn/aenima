@@ -20,7 +20,7 @@ define([
     template: template
 
     ,lateralusEvents: {
-      timelineModified: function () {
+      'rekapi:timelineModified': function () {
         this.renderJsonIfVisible();
       }
 

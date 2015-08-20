@@ -12,10 +12,11 @@ define([
   var Base = Lateralus.Component.Model;
   var baseProto = Base.prototype;
 
-  var CssExportPanelComponentModel = Base.extend({
+  var ExportPanelComponentModel = Base.extend({
     defaults: {
       cssExportClass: ''
       ,analyticsUrl: ''
+      ,enableOrientationControls: true
     }
 
     /**
@@ -28,5 +29,5 @@ define([
     }
   });
 
-  return CssExportPanelComponentModel;
+  return ExportPanelComponentModel;
 });
