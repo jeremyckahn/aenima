@@ -41,9 +41,7 @@ define([
        * @return {Object}
        */
       timelineExport: function () {
-        return this.applyOrientationToExport(function () {
-          return this.exportTimeline();
-        });
+        return this.exportTimeline();
       }
 
       /**
@@ -59,12 +57,10 @@ define([
        * @return {string}
        */
       ,cssAnimationString: function (cssOpts) {
-        return this.applyOrientationToExport(function () {
-          var cssAnimationString = this.rekapi.renderer.toString(cssOpts);
-          cssAnimationString += this.collectOne('cssTrackingCode');
+        var cssAnimationString = this.rekapi.renderer.toString(cssOpts);
+        cssAnimationString += this.collectOne('cssTrackingCode');
 
-          return cssAnimationString;
-        });
+        return cssAnimationString;
       }
     }
 
@@ -155,29 +151,6 @@ define([
     }
 
     /**
-     * @param {Function} exportProcessor
-     * @return {*}
-     */
-    ,applyOrientationToExport: function (exportProcessor) {
-      var needToAccountForOffset =
-        this.lateralus.model.getUi('exportOrientation') === 'first-keyframe';
-
-      var offset = this.actorModel.getFirstKeyframeOffset();
-
-      if (needToAccountForOffset) {
-        this.actorModel.prepareForExport(offset);
-      }
-
-      var exportedAnimation = exportProcessor.call(this);
-
-      if (needToAccountForOffset) {
-        this.actorModel.cleanupAfterExport(offset);
-      }
-
-      return exportedAnimation;
-    }
-
-    /**
      * Prevent repeated calls to this.rekapi.update() until
      * endBulkKeyframeOperation is called.
      */
@@ -211,7 +184,6 @@ define([
       this.emit('loadBezierCurves', animationData.bezierCurves);
       this.actorModel.setKeyframes(
         animationData.actorModel.transformPropertyCollection);
-
     }
 
     ,clearCurrentAnimation: function () {

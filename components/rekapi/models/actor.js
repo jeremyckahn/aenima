@@ -26,21 +26,9 @@ define([
   'use strict';
 
   var Base = Lateralus.Component.Model;
-  var silentOptionObject = { silent: true };
 
   var ActorModel = Base.extend({
-    defaults: {
-    }
-
-    ,lateralusEvents: {
-      userRequestNewKeyframe: function () {
-        this.addNewKeyframe();
-      }
-
-      ,millisecondEditingEnd: function () {
-        this.emit('confirmNewKeyframeOrder', this.transformPropertyCollection);
-      }
-    }
+    KeyframePropertyCollection: KeyframePropertyCollection
 
     /**
      * @param {Object} attributes
@@ -53,7 +41,7 @@ define([
       this.actor = options.actor;
 
       this.transformPropertyCollection =
-        this.initCollection(KeyframePropertyCollection);
+        this.initCollection(this.KeyframePropertyCollection);
 
       this.listenTo(
         this.transformPropertyCollection
@@ -64,120 +52,6 @@ define([
 
     ,onMutateTransformPropertyCollection: function () {
       this.trigger('change');
-    }
-
-    /**
-     * @param {Object=} [opt_options]
-     * @param {number} [opt_options.millisecond]
-     * @param {Object} [opt_options.state]
-     * @param {string} [opt_options.easing]
-     */
-    ,addNewKeyframe: function (opt_options) {
-      var options = opt_options || {};
-      var keyframePropertyAttributes = options.state || {};
-      var transformPropertyCollection = this.transformPropertyCollection;
-
-      if (options.easing) {
-        _.extend(keyframePropertyAttributes, { easing: options.easing });
-      }
-
-      var millisecond = options.millisecond || 0;
-
-      if (transformPropertyCollection.length && !opt_options) {
-        keyframePropertyAttributes =
-          transformPropertyCollection.last().toJSON();
-
-        keyframePropertyAttributes.x += constant.NEW_KEYFRAME_X_INCREASE;
-        keyframePropertyAttributes.millisecond +=
-          constant.NEW_KEYFRAME_MS_INCREASE;
-
-        millisecond = keyframePropertyAttributes.millisecond;
-      } else {
-        keyframePropertyAttributes.millisecond = millisecond;
-      }
-
-      keyframePropertyAttributes.isCentered =
-        this.collectOne('cssConfigObject').isCentered;
-      keyframePropertyAttributes.isSelected = false;
-
-      // Add the model silently here, the "add" event is fired explicitly later
-      // in this function.
-      var keyframePropertyModel = transformPropertyCollection.add(
-        keyframePropertyAttributes || {}
-        ,silentOptionObject
-      );
-
-      this.keyframe(millisecond, {
-        transform: keyframePropertyModel.getValue()
-      }, {
-        transform: keyframePropertyModel.getEasing()
-      });
-
-      var keyframeProperty =
-        this.getKeyframeProperty('transform', millisecond);
-
-      keyframePropertyModel.bindToRawKeyframeProperty(keyframeProperty);
-
-      // Rekapi and the Collection are now in sync, notify the listeners.
-      transformPropertyCollection.trigger(
-        'add'
-        ,keyframeProperty
-        ,transformPropertyCollection
-      );
-
-      this.emit('keyframePropertyAdded', keyframePropertyModel);
-    }
-
-    /**
-     * @return {{x: number, y: number}}
-     */
-    ,getFirstKeyframeOffset: function () {
-      var firstKeyframe = this.transformPropertyCollection.first();
-
-      if (!firstKeyframe) {
-        return { x: 0, y: 0 };
-      }
-
-      var firstKeyframeJson = firstKeyframe.toJSON();
-
-      return {
-        x: firstKeyframeJson.x
-        ,y: firstKeyframeJson.y
-      };
-    }
-
-    /**
-     * Helper method for RekapiComponent#applyOrientationToExport.
-     * @param {{ x: number, y: number }} offset
-     */
-    ,prepareForExport: function (offset) {
-      this.transformPropertyCollection.each(function (model) {
-        ['x', 'y'].forEach(function (property) {
-          model.set(
-            property
-            ,model.get(property) - offset[property]
-            ,silentOptionObject);
-
-          model.updateRawKeyframeProperty();
-        }, this);
-      });
-    }
-
-    /**
-     * Helper method for RekapiComponent#applyOrientationToExport.
-     * @param {{ x: number, y: number }} offset
-     */
-    ,cleanupAfterExport: function (offset) {
-      this.transformPropertyCollection.each(function (model) {
-        ['x', 'y'].forEach(function (property) {
-          model.set(
-            property
-            ,model.get(property) + offset[property]
-            ,silentOptionObject);
-
-          model.updateRawKeyframeProperty();
-        }, this);
-      });
     }
 
     ,removeAllKeyframes: function () {
@@ -201,23 +75,6 @@ define([
         this.transformPropertyCollection.toJSON();
 
       return json;
-    }
-
-    /**
-     * @param {Array.<Object>} keyframes
-     */
-    ,setKeyframes: function (keyframes) {
-      this.rekapiComponent.beginBulkKeyframeOperation();
-      this.removeAllKeyframes();
-
-      keyframes.forEach(function (keyframe) {
-        this.addNewKeyframe({
-          millisecond: keyframe.millisecond
-          ,state: _.omit(keyframe, 'millisecond')
-        });
-      }, this);
-
-      this.rekapiComponent.endBulkKeyframeOperation();
     }
 
     /**

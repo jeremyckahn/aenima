@@ -22,18 +22,8 @@ define([
 
     ,comparator: 'millisecond'
 
-    ,lateralusEvents: {
-      /**
-       * @param {boolean} isCentered
-       */
-      userRequestUpdateCenteringSetting: function (isCentered) {
-        this.setCenteringRules(isCentered);
-      }
-    }
-
     ,initialize: function () {
       this.on('change', this.onChange, this);
-      this.setCenteringRules(this.lateralus.model.getUi('centerToPath'));
     }
 
     /**
@@ -61,13 +51,6 @@ define([
       if (isSet) {
         this.component.endBulkKeyframeOperation();
       }
-    }
-
-    /**
-     * @param {boolean} isCentered
-     */
-    ,setCenteringRules: function (isCentered) {
-      this.invoke('set', 'isCentered', isCentered);
     }
   });
 
