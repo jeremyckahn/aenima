@@ -23,7 +23,11 @@ define([
     name: 'aenima-shifty'
 
     ,lateralusEvents: {
-      userRequestedNewCurve: function () {
+      requestNewCurve: function () {
+        this.addNewCurve();
+      }
+
+      ,userRequestedNewCurve: function () {
         this.addNewCurve();
       }
 
