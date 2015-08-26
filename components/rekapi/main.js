@@ -163,29 +163,6 @@ define([
       this.doTimelineUpdate();
     }
 
-    /**
-     * @return {Object}
-     */
-    ,toJSON: function () {
-      return {
-        actorModel: this.actorModel.toJSON()
-        ,bezierCurves: this.bezierCurves
-      };
-    }
-
-    /**
-     * @param {string} animationName
-     */
-    ,fromJSON: function (animationName) {
-      this.clearCurrentAnimation();
-      var animationData =
-        this.lateralus.model.get('savedAnimations')[animationName];
-
-      this.emit('loadBezierCurves', animationData.bezierCurves);
-      this.actorModel.setKeyframes(
-        animationData.actorModel.transformPropertyCollection);
-    }
-
     ,clearCurrentAnimation: function () {
       this.actorModel.removeAllKeyframes();
     }
