@@ -45,14 +45,6 @@ define([
       }
 
       /**
-       * TODO: Perhaps this can be provided from the ActorModel class itself?
-       * @return {ActorModel}
-       */
-      ,currentActorModel: function () {
-        return this.actorModel;
-      }
-
-      /**
        * @param {Object} cssOpts Gets passed to Rekapi.DOMRenderer#toString.
        * @return {string}
        */
@@ -112,7 +104,6 @@ define([
       this.rekapi = new Rekapi(document.body);
       this.isPerformingBulkOperation = false;
       this.bezierCurves = {};
-      this.setupActor();
 
       var rekapiEventNames = this.getEventNames();
       var whitelistedRekapiEventNames =
