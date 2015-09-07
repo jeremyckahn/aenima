@@ -101,7 +101,7 @@ define([
     }
 
     ,initialize: function () {
-      this.rekapi = new Rekapi(document.body);
+      this.rekapi = new Rekapi(document.createElement('div'));
       this.isPerformingBulkOperation = false;
       this.bezierCurves = {};
 
