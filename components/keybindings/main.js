@@ -42,9 +42,9 @@ define([
      * @param {Object.<string>} map
      */
     ,bindEventMapToKeyEvents: function (keyEventName, map) {
-      _.each(map, function (stylieEventNames, keyName) {
+      _.each(map, function (eventNames, keyName) {
         kd[keyName][keyEventName](
-          this.requestEvent.bind(this, stylieEventNames));
+          this.requestEvent.bind(this, eventNames));
       }, this);
     }
 
