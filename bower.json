@@ -23,6 +23,7 @@
     "tests"
   ],
   "dependencies": {
+    "keydrown": "~1.1.3",
     "lateralus": "~0.8.0",
     "lateralus-components": "~0.0.9"
   },
