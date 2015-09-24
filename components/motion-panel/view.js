@@ -102,8 +102,7 @@ define([
     ,selectCurve: function (curveName) {
       this.$curveSelector.val(curveName);
       var curveFn = Tweenable.prototype.formula[curveName];
-      var modelProps = _.pick(curveFn, 'x1', 'y1', 'x2', 'y2');
-      modelProps.name = curveName;
+      var modelProps = _.pick(curveFn, 'displayName', 'x1', 'y1', 'x2', 'y2');
       this.component.bezierizerComponent.model.set(modelProps);
     }
 

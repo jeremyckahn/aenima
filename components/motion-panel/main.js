@@ -29,22 +29,19 @@ define([
     ,Model: Model
     ,template: template
 
+    ,lateralusEvents: {
+      /**
+       * @param {string} curveName
+       */
+      tweenableCurveCreated: function (curveName) {
+        this.view.selectCurve(curveName);
+      }
+    }
+
     ,initialize: function () {
       this.bezierizerComponent = this.addComponent(BezierizerComponent, {
         el: this.view.$bezierizer
       });
-
-      this.listenFor(
-        'tweenableCurveCreated'
-        ,this.onTweenableCurveCreated.bind(this)
-      );
-    }
-
-    /**
-     * @param {string} curveName
-     */
-    ,onTweenableCurveCreated: function (curveName) {
-      this.view.selectCurve(curveName);
     }
 
     /**

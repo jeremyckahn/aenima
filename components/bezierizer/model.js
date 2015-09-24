@@ -18,7 +18,7 @@ define([
   // TODO: This really should be part of a Collection, not a singleton Model.
   var BezierizerComponentModel = Base.extend({
     defaults: {
-      name: ''
+      displayName: ''
       ,x1: 0.25
       ,y1: 0.5
       ,x2: 0.75
@@ -60,7 +60,7 @@ define([
     ,onChange: function () {
       var attributes = this.attributes;
       Tweenable.setBezierFunction(
-        attributes.name
+        attributes.displayName
         ,attributes.x1
         ,attributes.y1
         ,attributes.x2

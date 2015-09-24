@@ -68,7 +68,7 @@ define([
        * @param {string} curveName
        */
       ,unsetBezierFunction: function (curveName) {
-        delete this.bezierCurves[curveName];
+        delete this.curves[curveName];
         this.doTimelineUpdate();
       }
 
@@ -103,7 +103,7 @@ define([
     ,initialize: function () {
       this.rekapi = new Rekapi(document.createElement('div'));
       this.isPerformingBulkOperation = false;
-      this.bezierCurves = {};
+      this.curves = {};
 
       var rekapiEventNames = this.getEventNames();
       var whitelistedRekapiEventNames =
@@ -162,8 +162,8 @@ define([
      * @param {BezierizerComponentModel} bezierComponentModel
      */
     ,saveBezierCurve: function (bezierComponentModel) {
-      var bezierCurveJson = bezierComponentModel.toJSON();
-      this.bezierCurves[bezierCurveJson.name] = bezierCurveJson;
+      var curveJson = bezierComponentModel.toJSON();
+      this.curves[curveJson.displayName] = curveJson;
       this.doTimelineUpdate();
     }
   });

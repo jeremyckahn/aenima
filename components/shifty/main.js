@@ -42,7 +42,7 @@ define([
        */
       ,setCustomCurve: function (curveObject) {
         this.setCurve(
-          curveObject.name
+          curveObject.displayName
           ,curveObject.x1
           ,curveObject.y1
           ,curveObject.x2
