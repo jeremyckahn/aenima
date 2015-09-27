@@ -34,6 +34,12 @@ define([
         }
       }
 
+      ,userRequestUpdateOnionSkinSettingViaKeybinding: function () {
+        if (this.$showOnionSkin) {
+          this.$showOnionSkin.click();
+        }
+      }
+
       ,selectFirstCurve: function () {
         var $firstCurve = this.$curveSelector.children(':first');
         this.selectCurve($firstCurve.val());
