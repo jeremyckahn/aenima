@@ -16,6 +16,7 @@ define([
     defaults: {
       enablePathToggle: true
       ,enableCenterToggle: true
+      ,enableOnionSkinToggle: true
     }
 
     /**

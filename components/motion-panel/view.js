@@ -69,6 +69,12 @@ define([
         this.emit('userRequestUpdateCenteringSetting', centerToPath);
       }
 
+      ,'change .show-onion-skin': function () {
+        var showOnionSkin = this.$showOnionSkin.is(':checked');
+        this.lateralus.model.setUi('showOnionSkin', showOnionSkin);
+        this.emit('userRequestUpdateOnionSkinSetting', showOnionSkin);
+      }
+
       ,'change .curve-selector': function () {
         this.selectCurve(this.$curveSelector.val());
       }
