@@ -16,7 +16,6 @@ define([
     defaults: {
       cssExportClass: ''
       ,analyticsUrl: ''
-      ,enableOrientationControls: true
     }
 
     /**
