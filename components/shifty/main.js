@@ -52,6 +52,10 @@ define([
       ,userRequestResetAnimation: function () {
         this.resetCustomCurves();
       }
+
+      ,requestClearTimeline: function () {
+        this.resetCustomCurves();
+      }
     }
 
     ,addNewCurve: function () {

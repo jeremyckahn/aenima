@@ -12,6 +12,8 @@ define([
 
   ,'aenima.utils'
 
+  ,'aenima.constant'
+
 ], function (
 
   _
@@ -25,6 +27,8 @@ define([
   ,Rekapi
 
   ,utils
+
+  ,constant
 
 ) {
   'use strict';
@@ -98,12 +102,21 @@ define([
       ,userRequestTogglePreviewPlayback: function () {
         this[this.isPlaying() ? 'pause' : 'playFromCurrent']();
       }
+
+      ,requestRecordUndoState: function () {
+        this.recordUndoState();
+      }
+
+      ,requestClearUndoStack: function () {
+        this.undoStateStack.length = 0;
+      }
     }
 
     ,initialize: function () {
       this.rekapi = new Rekapi(document.createElement('div'));
       this.isPerformingBulkOperation = false;
       this.curves = {};
+      this.undoStateStack = [];
 
       var rekapiEventNames = this.getEventNames();
       var whitelistedRekapiEventNames =
@@ -119,7 +132,8 @@ define([
     }
 
     ,doTimelineUpdate: function () {
-      if (this.isPerformingBulkOperation) {
+      if (this.isPerformingBulkOperation ||
+          this.lateralus.model.get('isLoadingTimeline')) {
         return;
       }
 
@@ -166,6 +180,48 @@ define([
       this.curves[curveJson.displayName] = curveJson;
       this.doTimelineUpdate();
     }
+
+    ,recordUndoState: function () {
+      this.undoStateStack.push(this.exportTimeline());
+      var undoStateStackLength = this.undoStateStack.length;
+
+      if (undoStateStackLength < constant.UNDO_STACK_LIMIT) {
+        this.undoStateStack =
+          this.undoStateStack.slice(
+            undoStateStackLength - constant.UNDO_STACK_LIMIT
+            ,constant.UNDO_STACK_LIMIT
+          );
+      }
+    }
+
+    ,revertToPreviouslyRecordedUndoState: function () {
+      var previousState = this.undoStateStack.pop();
+
+      if (!previousState) {
+        return;
+      }
+
+      var currentMillisecond = this.rekapi.getLastMillisecondUpdated();
+      this.removeAllActors();
+      this.importTimeline(previousState);
+      this.update(Math.min(currentMillisecond, this.getAnimationLength()));
+      this.rekapi.trigger('timelineModified');
+      this.emit('revertedToPreviousState');
+    }
+
+    /**
+     * Overrides Rekapi's removeAllActors method.
+     * @override
+     */
+    ,removeAllActors: function () {
+      var rekapi = this.rekapi;
+
+      // Each actor must be removed individually so the rekapi:removeActor
+      // event is fired
+      _.each(rekapi.getAllActors(), function (actor) {
+        rekapi.removeActor(actor);
+      }, this);
+    }
   });
 
   RekapiComponent.ActorModel = ActorModel;
@@ -173,7 +229,7 @@ define([
   RekapiComponent.KeyframePropertyCollection = KeyframePropertyCollection;
 
   utils.proxy(Rekapi, RekapiComponent, {
-    blacklistedMethodNames: ['on', 'off']
+    blacklistedMethodNames: ['on', 'off', 'trigger']
     ,subject: function () {
       return this.rekapi;
     }

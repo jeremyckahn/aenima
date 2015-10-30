@@ -56,6 +56,10 @@ define([
 
         $optionToRemove.remove();
       }
+
+      ,requestClearTimeline: function () {
+        this.$curveSelector.empty();
+      }
     }
 
     ,events: {

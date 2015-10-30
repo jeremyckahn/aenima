@@ -64,5 +64,12 @@ define([
     ,getQueryParam: function (param) {
       return queryParams[param];
     }
+
+    /**
+     * @return {boolean}
+     */
+    ,isMac: function () {
+      return !!window.navigator.userAgent.match(/Macintosh/);
+    }
   };
 });

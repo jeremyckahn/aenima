@@ -1,12 +1,14 @@
 define([
 
-  'lateralus'
+  'underscore'
+  ,'lateralus'
 
   ,'shifty'
 
 ], function (
 
-  Lateralus
+  _
+  ,Lateralus
 
   ,Tweenable
 
@@ -36,6 +38,18 @@ define([
         }
 
         this.emit('selectFirstCurve');
+      }
+
+      ,revertedToPreviousState: function () {
+        this.set(
+          _.pick(
+            Tweenable.prototype.formula[this.get('displayName')]
+            ,'x1'
+            ,'y1'
+            ,'x2'
+            ,'y2'
+          )
+        );
       }
     }
 

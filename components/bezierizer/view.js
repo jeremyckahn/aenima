@@ -43,6 +43,10 @@ define([
         this.model.set(this.getHandlePositions());
       }
 
+      ,'dragStart .bezierizer-control': function () {
+        this.emit('requestRecordUndoState');
+      }
+
       /**
        * @param {jQuery.Event} evt
        */
