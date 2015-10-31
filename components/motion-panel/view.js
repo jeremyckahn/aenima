@@ -41,6 +41,10 @@ define([
       }
 
       ,selectFirstCurve: function () {
+        if (!this.$curveSelector.children().length) {
+          this.curveSelectorView.render();
+        }
+
         var $firstCurve = this.$curveSelector.children(':first');
         this.selectCurve($firstCurve.val());
       }
@@ -95,7 +99,7 @@ define([
      */
     ,initialize: function () {
       baseProto.initialize.apply(this, arguments);
-      this.addSubview(CurveSelectorComponent.View, {
+      this.curveSelectorView = this.addSubview(CurveSelectorComponent.View, {
         el: this.$curveSelector
         ,onlyShowCustomCurves: true
       });
