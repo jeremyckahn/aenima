@@ -61,8 +61,7 @@ define([
       // while models are being removed.
       var safeCopy = transformPropertyCollection.models.slice();
 
-      safeCopy.forEach(
-        transformPropertyCollection.remove, transformPropertyCollection);
+      transformPropertyCollection.remove(safeCopy, { dispose: true });
     }
 
     /**
