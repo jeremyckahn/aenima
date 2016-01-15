@@ -65,6 +65,10 @@ define([
           this.syncModelToNumberInput(target);
         }
       }
+
+      ,'focus .row.handles': function () {
+        this.emit('requestRecordUndoState');
+      }
     }
 
     /**

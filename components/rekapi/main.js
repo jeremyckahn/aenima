@@ -34,6 +34,7 @@ define([
   'use strict';
 
   var Base = Lateralus.Component;
+  var $doc = $(document.documentElement);
 
   var RekapiComponent = Base.extend({
     name: 'aenima-rekapi'
@@ -182,7 +183,13 @@ define([
     }
 
     ,recordUndoState: function () {
-      this.undoStateStack.push(this.exportTimeline());
+      var currentState = JSON.stringify(this.exportTimeline());
+
+      if (currentState === _.last(this.undoStateStack)) {
+        return;
+      }
+
+      this.undoStateStack.push(currentState);
       var undoStateStackLength = this.undoStateStack.length;
 
       if (undoStateStackLength < constant.UNDO_STACK_LIMIT) {
@@ -195,19 +202,27 @@ define([
     }
 
     ,revertToPreviouslyRecordedUndoState: function () {
-      var previousState = this.undoStateStack.pop();
-
-      if (!previousState) {
+      if (!this.undoStateStack.length) {
         return;
       }
 
+      var previousState = JSON.parse(this.undoStateStack.pop());
+
+      // Cause all $.fn.dragon drags to end
+      $doc.trigger('mouseup');
+
       var currentMillisecond = this.rekapi.getLastMillisecondUpdated();
-      this.removeAllActors();
+      this.removeCurrentTimeline();
       this.importTimeline(previousState);
       this.update(Math.min(currentMillisecond, this.getAnimationLength()));
       this.rekapi.trigger('timelineModified');
       this.emit('revertedToPreviousState');
     }
+
+    /**
+     * To be overridden by subclasses
+     */
+    ,removeCurrentTimeline: function () {}
 
     /**
      * Overrides Rekapi's removeAllActors method.

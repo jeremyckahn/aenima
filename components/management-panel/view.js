@@ -50,6 +50,7 @@ define([
       }
 
       ,'click .load': function () {
+        this.emit('requestRecordUndoState');
         var currentlySelectedAnimation = this.$loadSelector.val();
         this.$saveInput.val(currentlySelectedAnimation);
 
