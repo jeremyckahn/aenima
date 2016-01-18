@@ -183,6 +183,10 @@ define([
     }
 
     ,recordUndoState: function () {
+      if (this.lateralus.model.get('doPreventUndoRecording')) {
+        return;
+      }
+
       var currentState = JSON.stringify(this.exportTimeline());
 
       if (currentState === _.last(this.undoStateStack)) {
