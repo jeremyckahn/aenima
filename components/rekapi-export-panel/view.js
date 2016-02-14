@@ -53,7 +53,7 @@ define([
 
     ,renderJson: function () {
       var exportString =
-        JSON.stringify(this.collectOne('timelineExport'), null, 2);
+        JSON.stringify(this.collectOne('rawRekapiExport'), null, 2);
       this.$generatedJs.val(exportString);
     }
   });

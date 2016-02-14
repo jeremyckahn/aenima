@@ -50,6 +50,13 @@ define([
       }
 
       /**
+       * @return {Object}
+       */
+      ,rawRekapiExport: function () {
+        return this.rekapi.exportTimeline();
+      }
+
+      /**
        * @param {Object} cssOpts Gets passed to Rekapi.DOMRenderer#toString.
        * @return {string}
        */
