@@ -5,12 +5,16 @@ define([
 
   ,'text!./template.mustache'
 
+  ,'../../constant'
+
 ], function (
 
   _
   ,Lateralus
 
   ,template
+
+  ,constant
 
 ) {
   'use strict';
@@ -112,6 +116,11 @@ define([
     }
 
     ,renderCss: function () {
+      if (this.lateralus.rekapi.getAnimationLength() >
+          constant.CSS_DURATION_LIMIT) {
+        return;
+      }
+
       var cssOpts = this.collectOne('cssConfigObject');
       var css = this.collectOne('cssAnimationString', cssOpts);
       this.$generatedCss.val(css);
