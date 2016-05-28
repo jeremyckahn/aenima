@@ -116,7 +116,9 @@ define([
     }
 
     ,renderCss: function () {
-      if (this.lateralus.rekapi.getAnimationLength() >
+      var rekapi = this.lateralus.rekapi;
+
+      if (rekapi && rekapi.getAnimationLength() >
           constant.CSS_DURATION_LIMIT) {
         return;
       }
