@@ -1,0 +1,44 @@
+<h1>Create an account</h1>
+<form class="$form" action="#">
+  <p class="$userCreationError error hide"></p>
+  <label
+    class="row"
+    data-label-text="Must contain at least one character and no spaces"
+  >
+    <span>User name</span>
+    <input
+      type="text"
+      class="$nameInput name-input wide"
+      value=""
+      required
+      pattern="^\S+$"
+    >
+  </label>
+  <label
+    class="row"
+    data-label-text="Must be a valid email address"
+  >
+    <span>Yout email</span>
+    <input
+      type="email"
+      class="$emailInput wide"
+      value=""
+      required
+    >
+  </label>
+  <!-- FIXME: Require secure passwords -->
+  <label
+    class="row"
+    data-label-text="Must contain at least one character"
+  >
+    <span>Password</span>
+    <input
+      type="password"
+      class="$passwordInput wide"
+      value=""
+      required
+      pattern=".+"
+    >
+  </label>
+  <button class="wide create">Create</button>
+</form>

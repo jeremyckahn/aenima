@@ -9,5 +9,6 @@ define(function () {
     ,UNDO_STACK_LIMIT: 50
     ,MODAL_OPACITY: 0.95
     ,CSS_DURATION_LIMIT: 1000 * 60 * 5
+    ,INVALID_CLASS: 'invalid'
   };
 });

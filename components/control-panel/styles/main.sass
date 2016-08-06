@@ -14,6 +14,12 @@
   width: 360px
   z-index: 20
 
+  h1
+    font-size: 1.8em
+    font-weight: lighter
+    margin-top: 0
+    text-align: center
+
   p
     line-height: 1.4em
 
@@ -32,15 +38,31 @@
     &.glyphicon
       top: .2em
 
+  label
+
+    &.invalid
+
+      input
+        background: $aenima-invalid-input-background
+        color: $aenima-invalid-input-color
+
+    &[data-label-text]
+
+      &.invalid
+
+        &:after
+          color: $aenima-invalid-input-color
+          content: attr(data-label-text)
+          display: block
+          padding-top: 0.5em
+
   input
 
     &[type="text"],
+    &[type="email"],
+    &[type="password"],
     &[type="number"]
       +text-based-input
-
-      &.invalid
-        background: $aenima-invalid-input-background
-        color: $aenima-invalid-input-color
 
     &[type="number"]
       width: 3.5em
@@ -64,8 +86,11 @@
 
   hr
     border-color: $aenima-input-background-color
-    margin-bottom: 2em
+    margin-bottom: 1em
     width: 100%
+
+  .error
+    color: #f00
 
   .btn-hidden-label-wrapper
 
