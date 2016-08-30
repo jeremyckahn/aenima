@@ -86,8 +86,14 @@ define([
         }
 
         this.lateralus.dataAdapter
-          .createUser({ name, email, password })
-            .done(this.onCreateUser.bind(this));
+          .createUser({
+            name: name
+            ,email: email
+            ,password: password
+          })
+          .done(
+            this.onCreateUser.bind(this)
+          );
       }.bind(this));
     }
 
@@ -100,7 +106,7 @@ define([
         .then(function (res) {
           if (res.doesExist) {
             this.showUserCreationError(
-              `Oh no! "${name}" already exists.  Try another user name!`
+              'Oh no! "' + name + '" already exists.  Try another user name!'
             );
           } else {
             this.$userCreationError.addClass('hide');

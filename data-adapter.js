@@ -24,7 +24,10 @@ define([
      * @return {jqXHR}
      */
     post: function (api, data) {
-      return $.ajax(`${this.apiRoot}/${api}`, { method: 'POST' , data });
+      return $.ajax(this.apiRoot + '/' + api, {
+        method: 'POST'
+        ,data: data
+      });
     }
 
     /**
@@ -32,7 +35,7 @@ define([
      * @return {jqXHR}
      */
     ,doesUserExist: function (name) {
-      return this.post('user/does-exist', { name });
+      return this.post('user/does-exist', { name: name });
     }
 
     /**
