@@ -4,7 +4,7 @@ define([
 
   ,'text!./template.mustache'
 
-  ,'aenima.component.hidable'
+  ,'../hidable/main'
 
   ,'../../constant'
 

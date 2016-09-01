@@ -6,7 +6,7 @@ define([
 
   ,'text!./template.mustache'
 
-  ,'aenima.constant'
+  ,'aenima/constant'
 
 ], function (
 

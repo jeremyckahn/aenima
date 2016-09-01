@@ -6,7 +6,7 @@ define([
 
   ,'text!./template.mustache'
 
-  ,'aenima.component.curve-selector'
+  ,'../curve-selector/main'
 
 ], function (
 

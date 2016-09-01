@@ -6,8 +6,8 @@ define([
   ,'./model'
   ,'text!./template.mustache'
 
-  ,'aenima.component.css-export-panel'
-  ,'aenima.component.rekapi-export-panel'
+  ,'../css-export-panel/main'
+  ,'../rekapi-export-panel/main'
 
 ], function (
 

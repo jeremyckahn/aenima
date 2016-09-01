@@ -6,7 +6,7 @@ define([
   ,'./model'
   ,'text!./template.mustache'
 
-  ,'aenima.component.bezierizer'
+  ,'../bezierizer/main'
 
 ], function (
 

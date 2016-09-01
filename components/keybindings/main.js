@@ -4,7 +4,7 @@ define([
   ,'lateralus'
   ,'keydrown'
 
-  ,'aenima.utils'
+  ,'aenima/utils'
 
 ], function (
 

@@ -6,8 +6,8 @@ define([
   ,'./model'
   ,'text!./template.mustache'
 
-  ,'aenima.component.user-creation'
-  ,'aenima.component.user-display'
+  ,'../user-creation/main'
+  ,'../user-display/main'
 
 ], function (
 

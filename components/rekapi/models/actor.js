@@ -7,8 +7,8 @@ define([
 
   ,'../collections/keyframe-property'
 
-  ,'aenima.constant'
-  ,'aenima.utils'
+  ,'aenima/constant'
+  ,'aenima/utils'
 
 ], function (
 

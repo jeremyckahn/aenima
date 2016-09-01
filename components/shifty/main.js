@@ -4,7 +4,7 @@ define([
   ,'lateralus'
   ,'shifty'
 
-  ,'aenima.constant'
+  ,'aenima/constant'
 
 ], function (
 

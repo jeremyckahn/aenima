@@ -10,9 +10,9 @@ define([
 
   ,'rekapi'
 
-  ,'aenima.utils'
+  ,'aenima/utils'
 
-  ,'aenima.constant'
+  ,'aenima/constant'
 
 ], function (
 
