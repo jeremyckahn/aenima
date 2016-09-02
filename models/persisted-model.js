@@ -4,7 +4,7 @@ define([
   'underscore'
   ,'lateralus'
 
-  ,'aenima.mixin/local-storage-model'
+  ,'../mixins/local-storage-model'
 
 ], function (
 
