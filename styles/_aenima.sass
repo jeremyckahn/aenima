@@ -14,6 +14,12 @@
   height: $aenima-slide-thumb-size
   width: $aenima-slide-thumb-size
 
+@mixin bordered-icon-background($inner-color, $outer-color)
+  +background-image(radial-gradient(50% 50%, $inner-color, $outer-color))
+
+  &:active
+    +background-image(radial-gradient(50% 50%, $outer-color, $inner-color))
+
 .aenima
   font-family: Helvetica, Arial, serif
   font-size: 13px
@@ -74,7 +80,7 @@
     &.glyphicon
       background: none
       border: none
-      color: $aenima-icon-color
+      color: $aenima-bordered-icon-color
       font-size: 1.2em
       padding: 5px 12px
       position: relative
@@ -127,3 +133,32 @@
   .fadable
     transition-duration: $aenima-fadable-duration
     transition-property: opacity
+
+  $button-line-height: $aenima-bordered-icon-button-dimensions - ($aenima-bordered-icon-button-border-width * 2)
+  button.bordered-icon
+    border: solid $aenima-bordered-icon-button-border-width $aenima-bordered-icon-button-color
+    border-radius: 50%
+    color: $aenima-bordered-icon-button-color
+    cursor: pointer
+    display: block
+    font-size: $aenima-bordered-icon-button-dimensions
+    margin-left: 1em
+    margin-top: -2px
+    text-align: center
+    text-shadow: 0 1px 1px $aenima-bordered-icon-button-text-shadow
+    height: $aenima-bordered-icon-button-dimensions
+    width: $aenima-bordered-icon-button-dimensions
+    line-height: $button-line-height
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.27), 0 0.1em 0 rgba(0,0,0,0.04), 0 0 12px rgba(0,0,0,0.21)
+
+    .safari &
+      line-height: $button-line-height - .1em
+
+    i
+      top: .08em
+
+      .firefox &
+        top: 0.1em
+
+      .safari &
+        top: 0.07em

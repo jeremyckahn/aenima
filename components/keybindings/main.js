@@ -52,13 +52,27 @@ define([
 
     /**
      * @param {string} keyEventName
-     * @param {Object.<string>} map
+     * @param {Object.<string || Array.<string>>} map
      * @param {Array.<string>?} opt_modifierKeys
      */
     ,bindEventMapToKeyEvents: function (keyEventName, map, opt_modifierKeys) {
       _.each(map, function (eventNames, keyName) {
         kd[keyName][keyEventName](
           this.requestEvent.bind(this, eventNames, opt_modifierKeys || []));
+      }, this);
+    }
+
+    /**
+     * @param {string} keyEventName
+     * @param {Object.<string || Array.<string>>} map
+     */
+    ,unbindKeyMap: function (keyEventName, map) {
+      var camelizedKeyEventName =
+        keyEventName[0].toUpperCase() + keyEventName.slice(1);
+      var unbindMethod = 'unbind' + camelizedKeyEventName;
+
+      _.each(map, function (eventNames, keyName) {
+        kd[keyName][unbindMethod]();
       }, this);
     }
 
@@ -85,6 +99,12 @@ define([
       eventNames.forEach(function (eventName) {
         this.emit(eventName, evt);
       }.bind(this));
+    }
+
+    ,dispose: function () {
+      this.unbindKeyMap('up', this.keyUpEventMap);
+      this.unbindKeyMap('press', this.keyPressEventMap);
+      this.unbindKeyMap('press', this.metaKeyPressEventMap);
     }
   });
 

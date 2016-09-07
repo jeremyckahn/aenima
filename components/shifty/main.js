@@ -56,6 +56,24 @@ define([
       ,requestClearTimeline: function () {
         this.resetCustomCurves();
       }
+
+      ,quarantineCustomCurves: function () {
+        this.quarantineCustomCurves();
+      }
+
+      ,unquarantineCustomCurves: function () {
+        this.unquarantineCustomCurves();
+      }
+    }
+
+    ,provide: {
+      customCurves: function () {
+        return this.getCustomCurves();
+      }
+    }
+
+    ,initialize: function () {
+      this.quarantinedCustomCurves = [];
     }
 
     ,addNewCurve: function () {
@@ -124,6 +142,22 @@ define([
      */
     ,getCustomCurveCount: function () {
       return this.getCustomCurves().length;
+    }
+
+    ,quarantineCustomCurves: function () {
+      this.quarantinedCustomCurves = this.getCustomCurves();
+    }
+
+    ,unquarantineCustomCurves: function () {
+      this.quarantinedCustomCurves.forEach(function (customCurve) {
+        Tweenable.setBezierFunction(
+          customCurve.displayName
+          ,customCurve.x1
+          ,customCurve.y1
+          ,customCurve.x2
+          ,customCurve.y2
+        );
+      });
     }
   });
 

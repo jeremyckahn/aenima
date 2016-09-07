@@ -1,6 +1,7 @@
 define([
 
-  'lateralus'
+  'underscore'
+  ,'lateralus'
 
   ,'rekapi'
 
@@ -8,7 +9,8 @@ define([
 
 ], function (
 
-  Lateralus
+  _
+  ,Lateralus
 
   ,Rekapi
 
@@ -40,11 +42,14 @@ define([
       });
     }
 
-    ,hide: function () {
+    // TODO: Refactor this and quickShow
+    /**
+     * @param {Function} [callback]
+     */
+    ,hide: function (callback) {
       if (this.actor.rekapi.isPlaying()) {
         return;
       }
-
 
       this.actor
         .removeAllKeyframes()
@@ -54,7 +59,10 @@ define([
         }).keyframe(constant.HIDABLE_VIEW_TRANSITION_DURATION, {
           scale: 0
           ,opacity: 0
-          ,'function': this.hideCallback.bind(this)
+          ,'function': function () {
+            (callback || _.noop)();
+            this.hideCallback();
+          }.bind(this)
         }, {
           scale: 'easeInBack'
           ,opacity: 'easeOutQuad'
@@ -63,6 +71,35 @@ define([
       this.actor.rekapi.play(1);
     }
 
+    /**
+     * @param {Function} [callback]
+     */
+    ,quickHide: function (callback) {
+      if (this.actor.rekapi.isPlaying()) {
+        return;
+      }
+
+      this.actor
+        .removeAllKeyframes()
+        .keyframe(0, {
+          scale: 1
+          ,opacity: this.targetShowOpacity
+        }).keyframe(constant.HIDABLE_VIEW_TRANSITION_QUICK_DURATION, {
+          scale: 0
+          ,opacity: 0
+          ,'function': function () {
+            (callback || _.noop)();
+            this.hideCallback();
+          }.bind(this)
+        }, {
+          scale: 'easeOutQuad'
+          ,opacity: 'easeOutQuad'
+        });
+
+      this.actor.rekapi.play(1);
+    }
+
+    // TODO: Refactor this and quickShow
     ,show: function () {
       if (this.actor.rekapi.isPlaying()) {
         return;
@@ -83,6 +120,32 @@ define([
           }.bind(this)
         }, {
           scale: 'swingTo'
+          ,opacity: 'easeInQuad'
+        });
+
+      this.actor.rekapi.play(1);
+    }
+
+    ,quickShow: function () {
+      if (this.actor.rekapi.isPlaying()) {
+        return;
+      }
+
+      this.$el.css('display', '');
+
+      this.actor
+        .removeAllKeyframes()
+        .keyframe(0, {
+          scale: 0
+          ,opacity: 0
+        }).keyframe(constant.HIDABLE_VIEW_TRANSITION_QUICK_DURATION, {
+          scale: 1
+          ,opacity: this.targetShowOpacity
+          ,'function': function () {
+            this.isHidden = false;
+          }.bind(this)
+        }, {
+          scale: 'easeInQuad'
           ,opacity: 'easeInQuad'
         });
 

@@ -34,6 +34,7 @@ define([
   'use strict';
 
   var Base = Lateralus.Component;
+  var baseProto = Base.prototype;
   var $doc = $(document.documentElement);
 
   var RekapiComponent = Base.extend({
@@ -66,6 +67,10 @@ define([
 
         return cssAnimationString;
       }
+
+      ,isPlaying: function () {
+        return this.isPlaying();
+      }
     }
 
     ,lateralusEvents: {
@@ -90,6 +95,10 @@ define([
 
       ,userRequestPlay: function () {
         this.playFromCurrent();
+      }
+
+      ,requestPause: function () {
+        this.pause();
       }
 
       ,userRequestPause: function () {
@@ -247,6 +256,11 @@ define([
       _.each(rekapi.getAllActors(), function (actor) {
         rekapi.removeActor(actor);
       }, this);
+    }
+
+    ,dispose: function () {
+      this.rekapi.stop();
+      baseProto.dispose.apply(this, arguments);
     }
   });
 
