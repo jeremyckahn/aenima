@@ -47,7 +47,7 @@ define([
      * @param {Function} [callback]
      */
     ,hide: function (callback) {
-      if (this.actor.rekapi.isPlaying()) {
+      if (this.isHidden || this.actor.rekapi.isPlaying()) {
         return;
       }
 
@@ -59,14 +59,18 @@ define([
         }).keyframe(constant.HIDABLE_VIEW_TRANSITION_DURATION, {
           scale: 0
           ,opacity: 0
-          ,'function': function () {
-            (callback || _.noop)();
-            this.hideCallback();
-          }.bind(this)
         }, {
           scale: 'easeInBack'
           ,opacity: 'easeOutQuad'
         });
+
+      var onStop = function () {
+        (callback || _.noop)();
+        this.hideCallback();
+        this.actor.rekapi.off('stop', onStop);
+      }.bind(this);
+
+      this.actor.rekapi.on('stop', onStop);
 
       this.actor.rekapi.play(1);
     }
@@ -75,7 +79,7 @@ define([
      * @param {Function} [callback]
      */
     ,quickHide: function (callback) {
-      if (this.actor.rekapi.isPlaying()) {
+      if (this.isHidden || this.actor.rekapi.isPlaying()) {
         return;
       }
 
@@ -87,21 +91,25 @@ define([
         }).keyframe(constant.HIDABLE_VIEW_TRANSITION_QUICK_DURATION, {
           scale: 0
           ,opacity: 0
-          ,'function': function () {
-            (callback || _.noop)();
-            this.hideCallback();
-          }.bind(this)
         }, {
           scale: 'easeOutQuad'
           ,opacity: 'easeOutQuad'
         });
+
+      var onStop = function () {
+        (callback || _.noop)();
+        this.hideCallback();
+        this.actor.rekapi.off('stop', onStop);
+      }.bind(this);
+
+      this.actor.rekapi.on('stop', onStop);
 
       this.actor.rekapi.play(1);
     }
 
     // TODO: Refactor this and quickShow
     ,show: function () {
-      if (this.actor.rekapi.isPlaying()) {
+      if (!this.isHidden || this.actor.rekapi.isPlaying()) {
         return;
       }
 
@@ -115,19 +123,23 @@ define([
         }).keyframe(constant.HIDABLE_VIEW_TRANSITION_DURATION, {
           scale: 1
           ,opacity: this.targetShowOpacity
-          ,'function': function () {
-            this.isHidden = false;
-          }.bind(this)
         }, {
           scale: 'swingTo'
           ,opacity: 'easeInQuad'
         });
 
+      var onStop = function () {
+        this.isHidden = false;
+        this.actor.rekapi.off('stop', onStop);
+      }.bind(this);
+
+      this.actor.rekapi.on('stop', onStop);
+
       this.actor.rekapi.play(1);
     }
 
     ,quickShow: function () {
-      if (this.actor.rekapi.isPlaying()) {
+      if (!this.isHidden || this.actor.rekapi.isPlaying()) {
         return;
       }
 
@@ -141,13 +153,17 @@ define([
         }).keyframe(constant.HIDABLE_VIEW_TRANSITION_QUICK_DURATION, {
           scale: 1
           ,opacity: this.targetShowOpacity
-          ,'function': function () {
-            this.isHidden = false;
-          }.bind(this)
         }, {
           scale: 'easeInQuad'
           ,opacity: 'easeInQuad'
         });
+
+      var onStop = function () {
+        this.isHidden = false;
+        this.actor.rekapi.off('stop', onStop);
+      }.bind(this);
+
+      this.actor.rekapi.on('stop', onStop);
 
       this.actor.rekapi.play(1);
     }
