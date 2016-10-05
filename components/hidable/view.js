@@ -65,7 +65,29 @@ define([
         .play(1);
     }
 
-    // TODO: Refactor this and quickShow
+    /**
+     * @param {Function(Rekapi.Actor)} callback
+     */
+    ,_show: function (keyframeFn) {
+      if (!this.isHidden || this.actor.rekapi.isPlaying()) {
+        return;
+      }
+
+      this.$el.css('display', '');
+
+      this.actor.removeAllKeyframes();
+      keyframeFn(this.actor);
+
+      var onStop = function () {
+        this.isHidden = false;
+        this.actor.rekapi.off('stop', onStop);
+      }.bind(this);
+
+      this.actor.rekapi
+        .on('stop', onStop)
+        .play(1);
+    }
+
     /**
      * @param {Function} [callback]
      */
@@ -110,65 +132,40 @@ define([
       );
     }
 
-    // TODO: Refactor this and quickShow
     ,show: function () {
-      if (!this.isHidden || this.actor.rekapi.isPlaying()) {
-        return;
-      }
-
-      this.$el.css('display', '');
-
-      this.actor
-        .removeAllKeyframes()
-        .keyframe(0, {
-          scale: 0
-          ,opacity: 0
-        }).keyframe(constant.HIDABLE_VIEW_TRANSITION_DURATION, {
-          scale: 1
-          ,opacity: this.targetShowOpacity
-        }, {
-          scale: 'swingTo'
-          ,opacity: 'easeInQuad'
-        });
-
-      var onStop = function () {
-        this.isHidden = false;
-        this.actor.rekapi.off('stop', onStop);
-      }.bind(this);
-
-      this.actor.rekapi.on('stop', onStop);
-
-      this.actor.rekapi.play(1);
+      return this._show(
+        function (actor) {
+          actor
+            .keyframe(0, {
+              scale: 0
+              ,opacity: 0
+            }).keyframe(constant.HIDABLE_VIEW_TRANSITION_DURATION, {
+              scale: 1
+              ,opacity: this.targetShowOpacity
+            }, {
+              scale: 'swingTo'
+              ,opacity: 'easeInQuad'
+            });
+        }.bind(this)
+      );
     }
 
     ,quickShow: function () {
-      if (!this.isHidden || this.actor.rekapi.isPlaying()) {
-        return;
-      }
-
-      this.$el.css('display', '');
-
-      this.actor
-        .removeAllKeyframes()
-        .keyframe(0, {
-          scale: 0
-          ,opacity: 0
-        }).keyframe(constant.HIDABLE_VIEW_TRANSITION_QUICK_DURATION, {
-          scale: 1
-          ,opacity: this.targetShowOpacity
-        }, {
-          scale: 'easeInQuad'
-          ,opacity: 'easeInQuad'
-        });
-
-      var onStop = function () {
-        this.isHidden = false;
-        this.actor.rekapi.off('stop', onStop);
-      }.bind(this);
-
-      this.actor.rekapi.on('stop', onStop);
-
-      this.actor.rekapi.play(1);
+      return this._show(
+        function (actor) {
+          actor
+            .keyframe(0, {
+              scale: 0
+              ,opacity: 0
+            }).keyframe(constant.HIDABLE_VIEW_TRANSITION_QUICK_DURATION, {
+              scale: 1
+              ,opacity: this.targetShowOpacity
+            }, {
+              scale: 'easeInQuad'
+              ,opacity: 'easeInQuad'
+            });
+        }.bind(this)
+      );
     }
 
     ,hideCallback: function () {
