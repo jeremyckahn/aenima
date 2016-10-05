@@ -42,69 +42,72 @@ define([
       });
     }
 
+    /**
+     * @param {Function} keyframeFn
+     * @param {Function(Rekapi.Actor)} callback
+     */
+    ,_hide: function (keyframeFn, callback) {
+      if (this.isHidden || this.actor.rekapi.isPlaying()) {
+        return;
+      }
+
+      this.actor.removeAllKeyframes();
+      keyframeFn(this.actor);
+
+      var onStop = function () {
+        callback();
+        this.hideCallback();
+        this.actor.rekapi.off('stop', onStop);
+      }.bind(this);
+
+      this.actor.rekapi
+        .on('stop', onStop)
+        .play(1);
+    }
+
     // TODO: Refactor this and quickShow
     /**
      * @param {Function} [callback]
      */
     ,hide: function (callback) {
-      if (this.isHidden || this.actor.rekapi.isPlaying()) {
-        return;
-      }
-
-      this.actor
-        .removeAllKeyframes()
-        .keyframe(0, {
-          scale: 1
-          ,opacity: this.targetShowOpacity
-        }).keyframe(constant.HIDABLE_VIEW_TRANSITION_DURATION, {
-          scale: 0
-          ,opacity: 0
-        }, {
-          scale: 'easeInBack'
-          ,opacity: 'easeOutQuad'
-        });
-
-      var onStop = function () {
-        (callback || _.noop)();
-        this.hideCallback();
-        this.actor.rekapi.off('stop', onStop);
-      }.bind(this);
-
-      this.actor.rekapi.on('stop', onStop);
-
-      this.actor.rekapi.play(1);
+      return this._hide(
+        function (actor) {
+          actor
+            .keyframe(0, {
+              scale: 1
+              ,opacity: this.targetShowOpacity
+            }).keyframe(constant.HIDABLE_VIEW_TRANSITION_DURATION, {
+              scale: 0
+              ,opacity: 0
+            }, {
+              scale: 'easeInBack'
+              ,opacity: 'easeOutQuad'
+            });
+        }.bind(this),
+        callback || _.noop
+      );
     }
 
     /**
      * @param {Function} [callback]
      */
     ,quickHide: function (callback) {
-      if (this.isHidden || this.actor.rekapi.isPlaying()) {
-        return;
-      }
-
-      this.actor
-        .removeAllKeyframes()
-        .keyframe(0, {
-          scale: 1
-          ,opacity: this.targetShowOpacity
-        }).keyframe(constant.HIDABLE_VIEW_TRANSITION_QUICK_DURATION, {
-          scale: 0
-          ,opacity: 0
-        }, {
-          scale: 'easeOutQuad'
-          ,opacity: 'easeOutQuad'
-        });
-
-      var onStop = function () {
-        (callback || _.noop)();
-        this.hideCallback();
-        this.actor.rekapi.off('stop', onStop);
-      }.bind(this);
-
-      this.actor.rekapi.on('stop', onStop);
-
-      this.actor.rekapi.play(1);
+      return this._hide(
+        function (actor) {
+          actor
+            .keyframe(0, {
+              scale: 1
+              ,opacity: this.targetShowOpacity
+            }).keyframe(constant.HIDABLE_VIEW_TRANSITION_QUICK_DURATION, {
+              scale: 0
+              ,opacity: 0
+            }, {
+              scale: 'easeOutQuad'
+              ,opacity: 'easeOutQuad'
+            });
+        }.bind(this),
+        callback || _.noop
+      );
     }
 
     // TODO: Refactor this and quickShow
