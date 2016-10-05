@@ -168,6 +168,26 @@ define([
       );
     }
 
+    ,quickFadeIn: function () {
+      this.$el.css({
+        transform: 'scale(1)'
+        ,opacity: 0
+      });
+
+      return this._show(
+        function (actor) {
+          actor
+            .keyframe(0, {
+              opacity: 0
+            }).keyframe(constant.HIDABLE_VIEW_TRANSITION_QUICK_DURATION, {
+              opacity: this.targetShowOpacity
+            }, {
+              opacity: 'easeInQuad'
+            });
+        }.bind(this)
+      );
+    }
+
     ,hideCallback: function () {
       this.$el.css('display', 'none');
       this.isHidden = true;
