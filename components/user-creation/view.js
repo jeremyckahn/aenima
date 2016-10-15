@@ -55,6 +55,10 @@ define([
         }
       }
 
+      ,'click .login': function () {
+        this.emit('userRequestShowLoginPanel');
+      }
+
       ,'blur input': function (evt) {
         this.validateEl(evt.target);
       }

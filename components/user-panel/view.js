@@ -26,6 +26,16 @@ define([
         this.$loggedOut.addClass('hide');
         this.$loggedIn.removeClass('hide');
       }
+
+      ,userRequestShowLoginPanel: function () {
+        this.$userLogin.removeClass('hide');
+        this.$userCreation.addClass('hide');
+      }
+
+      ,userRequestShowCreateUserPanel: function () {
+        this.$userLogin.addClass('hide');
+        this.$userCreation.removeClass('hide');
+      }
     }
 
     ,provide: {

@@ -7,6 +7,7 @@ define([
   ,'text!./template.mustache'
 
   ,'../user-creation/main'
+  ,'../user-login/main'
   ,'../user-display/main'
 
 ], function (
@@ -18,6 +19,7 @@ define([
   ,template
 
   ,UserCreationComponent
+  ,UserLoginComponent
   ,UserDisplayComponent
 
 ) {
@@ -35,12 +37,17 @@ define([
     }
 
     ,initialize: function () {
+      this.userLoginComponent =
+        this.addComponent(UserLoginComponent, {
+          el: this.view.$userLogin[0]
+        });
+
       this.userCreationComponent =
         this.addComponent(UserCreationComponent, {
           el: this.view.$userCreation[0]
         });
 
-      this.userLoginComponent =
+      this.userDisplayComponent =
         this.addComponent(UserDisplayComponent, {
           el: this.view.$userDisplay[0]
         });

@@ -55,7 +55,7 @@ define([
      * @param {string} options.password
      * @return {jqXHR}
      */
-    ,login: function (options) {
+    ,logIn: function (options) {
       return this.post('user/login', options);
     }
   };

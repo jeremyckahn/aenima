@@ -11,7 +11,7 @@ define([
        * @param {Object} userData
        */
       userCreated: function (userData) {
-        this.login(
+        this.logIn(
           userData.name
           ,this.collectOne('enteredPassword')
         );
@@ -24,11 +24,17 @@ define([
        * @param {string} password
        * @return {jqXHR}
        */
-      login: function (name, password) {
-        this.dataAdapter
-          .login({ name: name, password: password })
-          .then(function (user) {
-            this.emit('userLoggedIn', user);
+      logIn: function (name, password) {
+        return this.dataAdapter
+          .logIn({ name: name, password: password })
+          .then(function (data) {
+            if (data.errorMessage) {
+              return data;
+            }
+
+            this.emit('userLoggedIn', data);
+
+            return data;
           }.bind(this));
       }
     }
