@@ -1,6 +1,7 @@
 define([
 
-  'underscore'
+  'jquery'
+  ,'underscore'
   ,'lateralus'
 
   ,'./models/actor'
@@ -16,7 +17,8 @@ define([
 
 ], function (
 
-  _
+  $
+  ,_
   ,Lateralus
 
   ,ActorModel

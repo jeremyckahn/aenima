@@ -1,12 +1,14 @@
 define([
 
-  'lateralus'
+  'jquery'
+  ,'lateralus'
 
   ,'text!./template.mustache'
 
 ], function (
 
-  Lateralus
+  $
+  ,Lateralus
 
   ,template
 
