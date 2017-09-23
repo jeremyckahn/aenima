@@ -84,11 +84,5 @@ define([
     }
   });
 
-  utils.proxy(Rekapi.Actor, ActorModel, {
-    subject: function () {
-      return this.actor;
-    }
-  });
-
   return ActorModel;
 });

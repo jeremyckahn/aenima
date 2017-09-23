@@ -26,7 +26,7 @@ define([
 
   ,KeyframePropertyCollection
 
-  ,Rekapi
+  ,rekapi
 
   ,utils
 
@@ -38,6 +38,7 @@ define([
   var Base = Lateralus.Component;
   var baseProto = Base.prototype;
   var $doc = $(document.documentElement);
+  const { Rekapi, DOMRenderer } = rekapi;
 
   var RekapiComponent = Base.extend({
     name: 'aenima-rekapi'
@@ -45,11 +46,12 @@ define([
     ,ActorModel: ActorModel
 
     ,provide: {
+      // TODO: Try to remove one of these methods?  They're redundant now.
       /**
        * @return {Object}
        */
       timelineExport: function () {
-        return this.exportTimeline();
+        return this.rekapi.exportTimeline();
       }
 
       /**
@@ -64,14 +66,17 @@ define([
        * @return {string}
        */
       ,cssAnimationString: function (cssOpts) {
-        var cssAnimationString = this.rekapi.renderer.toString(cssOpts);
+        var cssAnimationString =
+          this.rekapi.getRendererInstance(DOMRenderer)
+            .getCss(cssOpts);
+
         cssAnimationString += this.collectOne('cssTrackingCode');
 
         return cssAnimationString;
       }
 
       ,isPlaying: function () {
-        return this.isPlaying();
+        return this.rekapi.isPlaying();
       }
     }
 
@@ -92,34 +97,34 @@ define([
       }
 
       ,requestPlay: function () {
-        this.playFromCurrent();
+        this.rekapi.playFromCurrent();
       }
 
       ,userRequestPlay: function () {
-        this.playFromCurrent();
+        this.rekapi.playFromCurrent();
       }
 
       ,requestPause: function () {
-        this.pause();
+        this.rekapi.pause();
       }
 
       ,userRequestPause: function () {
-        this.pause();
+        this.rekapi.pause();
       }
 
       ,userRequestStop: function () {
-        this.stop().update(0);
+        this.rekapi.stop().update(0);
       }
 
       /**
        * @param {number} millisecond
        */
       ,userRequestSetPlayheadMillisecond: function (millisecond) {
-        this.update(millisecond);
+        this.rekapi.update(millisecond);
       }
 
       ,userRequestTogglePreviewPlayback: function () {
-        this[this.isPlaying() ? 'pause' : 'playFromCurrent']();
+        this.rekapi[this.rekapi.isPlaying() ? 'pause' : 'playFromCurrent']();
       }
 
       ,requestRecordUndoState: function () {
@@ -137,7 +142,7 @@ define([
       this.curves = {};
       this.undoStateStack = [];
 
-      var rekapiEventNames = this.getEventNames();
+      var rekapiEventNames = this.rekapi.getEventNames();
       var whitelistedRekapiEventNames =
         _.without(rekapiEventNames, 'timelineModified');
 
@@ -156,12 +161,12 @@ define([
         return;
       }
 
-      this.update();
+      this.rekapi.update();
       this.emit('rekapi:timelineModified', this.rekapi);
     }
 
     ,setupActor: function () {
-      var newActor = this.addActor();
+      var newActor = this.rekapi.addActor();
       this.actorModel = this.initModel(this.ActorModel, {}, {
         rekapiComponent: this
         ,actor: newActor
@@ -205,7 +210,7 @@ define([
         return;
       }
 
-      var currentState = JSON.stringify(this.exportTimeline());
+      var currentState = JSON.stringify(this.toJSON());
 
       if (currentState === _.last(this.undoStateStack)) {
         return;
@@ -235,14 +240,17 @@ define([
 
       var currentMillisecond = this.rekapi.getLastMillisecondUpdated();
       this.removeCurrentTimeline();
-      this.importTimeline(previousState);
-      this.update(Math.min(currentMillisecond, this.getAnimationLength()));
+      this.fromJSON(previousState);
+      this.rekapi.update(
+        Math.min(currentMillisecond, this.rekapi.getAnimationLength())
+      );
       this.rekapi.trigger('timelineModified');
       this.emit('revertedToPreviousState');
     }
 
     /**
-     * To be overridden by subclasses
+     * To be overridden by subclasses (specifically Mantra)
+     * @abstract
      */
     ,removeCurrentTimeline: function () {}
 
@@ -260,6 +268,18 @@ define([
       }, this);
     }
 
+    /**
+     * Return current view-level state data
+     * @abstract
+     */
+    ,fromJSON: function () {}
+
+    /**
+     * Set view-level state data
+     * @abstract
+     */
+    ,toJSON: function () {}
+
     ,dispose: function () {
       this.rekapi.stop();
       baseProto.dispose.apply(this, arguments);
@@ -269,13 +289,6 @@ define([
   RekapiComponent.ActorModel = ActorModel;
   RekapiComponent.KeyframePropertyModel = KeyframePropertyModel;
   RekapiComponent.KeyframePropertyCollection = KeyframePropertyCollection;
-
-  utils.proxy(Rekapi, RekapiComponent, {
-    blacklistedMethodNames: ['on', 'off', 'trigger']
-    ,subject: function () {
-      return this.rekapi;
-    }
-  });
 
   return RekapiComponent;
 });

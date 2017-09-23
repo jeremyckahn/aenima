@@ -10,7 +10,7 @@ define([
 
   _
   ,Lateralus
-  ,Tweenable
+  ,shifty
 
   ,constant
 
@@ -18,6 +18,7 @@ define([
   'use strict';
 
   var Base = Lateralus.Component;
+  const { Tweenable, setBezierFunction, unsetBezierFunction } = shifty;
 
   var ShiftyComponent = Base.extend({
     name: 'aenima-shifty'
@@ -79,7 +80,7 @@ define([
     ,addNewCurve: function () {
       var newCurveName =
         constant.CUSTOM_CURVE_PREFIX + (this.getCustomCurveCount() + 1);
-      Tweenable.setBezierFunction(
+      setBezierFunction(
         newCurveName
         ,0.25
         ,0.5
@@ -98,7 +99,7 @@ define([
      * @param {number} y2
      */
     ,setCurve: function (name) {
-      Tweenable.setBezierFunction.apply(Tweenable, arguments);
+      setBezierFunction.apply(Tweenable, arguments);
       this.emit('tweenableCurveCreated', name);
     }
 
@@ -106,7 +107,7 @@ define([
       var customCurveNames = this.getCustomCurveNameList();
 
       customCurveNames.forEach(function (curveName) {
-        Tweenable.unsetBezierFunction(curveName);
+        unsetBezierFunction(curveName);
         this.emit('unsetBezierFunction', curveName);
       }, this);
 
@@ -117,7 +118,7 @@ define([
      * @return {Array.<string>}
      */
     ,getCustomCurveNameList: function () {
-      var curveNames = _.map(Tweenable.prototype.formula,
+      var curveNames = _.map(Tweenable.formulas,
           function (curve, curveName) {
         return curveName;
       });
@@ -131,7 +132,7 @@ define([
      * @return {Array.<Function>}
      */
     ,getCustomCurves: function () {
-      return _.filter(Tweenable.prototype.formula,
+      return _.filter(Tweenable.formulas,
           function (curve, curveName) {
         return curveName.match('^custom');
       });
@@ -150,7 +151,7 @@ define([
 
     ,unquarantineCustomCurves: function () {
       this.quarantinedCustomCurves.forEach(function (customCurve) {
-        Tweenable.setBezierFunction(
+        setBezierFunction(
           customCurve.displayName
           ,customCurve.x1
           ,customCurve.y1

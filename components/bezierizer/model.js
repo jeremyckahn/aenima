@@ -10,12 +10,13 @@ define([
   _
   ,Lateralus
 
-  ,Tweenable
+  ,shifty
 
 ) {
   'use strict';
 
   var Base = Lateralus.Component.Model;
+  const { Tweenable } = shifty;
 
   // TODO: This really should be part of a Collection, not a singleton Model.
   var BezierizerComponentModel = Base.extend({
@@ -43,7 +44,7 @@ define([
       ,revertedToPreviousState: function () {
         this.set(
           _.pick(
-            Tweenable.prototype.formula[this.get('displayName')]
+            Tweenable.formulas[this.get('displayName')]
             ,'x1'
             ,'y1'
             ,'x2'
@@ -73,7 +74,7 @@ define([
 
     ,onChange: function () {
       var attributes = this.attributes;
-      Tweenable.setBezierFunction(
+      shifty.setBezierFunction(
         attributes.displayName
         ,attributes.x1
         ,attributes.y1

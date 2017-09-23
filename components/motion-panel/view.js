@@ -12,7 +12,7 @@ define([
 
   _
   ,Lateralus
-  ,Tweenable
+  ,shifty
 
   ,template
 
@@ -23,6 +23,7 @@ define([
 
   var Base = Lateralus.Component.View;
   var baseProto = Base.prototype;
+  const { Tweenable } = shifty;
 
   var MotionPanelComponentView = Base.extend({
     template: template
@@ -121,7 +122,7 @@ define([
      */
     ,selectCurve: function (curveName) {
       this.$curveSelector.val(curveName);
-      var curveFn = Tweenable.prototype.formula[curveName];
+      var curveFn = Tweenable.formulas[curveName];
       var modelProps = _.pick(curveFn, 'displayName', 'x1', 'y1', 'x2', 'y2');
       this.component.bezierizerComponent.model.set(modelProps);
     }

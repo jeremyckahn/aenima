@@ -18,6 +18,6 @@
     "keydrown": "~1.2.1",
     "lateralus": "~0.9.3",
     "lateralus-components": "~0.0.9",
-    "rekapi": "~1.7.1"
+    "rekapi": "^2.0.3"
   }
 }

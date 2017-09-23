@@ -12,7 +12,7 @@ define([
   _
   ,Lateralus
 
-  ,Rekapi
+  ,rekapi
 
   ,constant
 
@@ -21,6 +21,7 @@ define([
 
   var Base = Lateralus.Component.View;
   var baseProto = Base.prototype;
+  const { Rekapi } = rekapi;
 
   var HidableComponentView = Base.extend({
     /**

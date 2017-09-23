@@ -12,7 +12,7 @@ define([
 
   _
   ,Lateralus
-  ,Tweenable
+  ,shifty
 
   ,template
 
@@ -23,6 +23,7 @@ define([
 
   var Base = Lateralus.Component.View;
   var baseProto = Base.prototype;
+  const { Tweenable } = shifty;
 
   var CurveSelectorComponentView = Base.extend({
     template: template
@@ -61,7 +62,7 @@ define([
      * @param {Array.<string>}
      */
     ,getCurveList: function () {
-      var fullList = Object.keys(Tweenable.prototype.formula);
+      var fullList = Object.keys(Tweenable.formulas);
       return this.onlyShowCustomCurves ?
         fullList.filter(function (curve) {
           return curve.match(aenimaConstant.CUSTOM_CURVE_PREFIX);
