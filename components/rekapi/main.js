@@ -269,13 +269,13 @@ define([
     }
 
     /**
-     * Return current view-level state data
+     * Set view-level state data
      * @abstract
      */
     ,fromJSON: function () {}
 
     /**
-     * Set view-level state data
+     * Return current view-level state data
      * @abstract
      */
     ,toJSON: function () {}
