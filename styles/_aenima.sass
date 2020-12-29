@@ -139,29 +139,26 @@
 
   $button-line-height: $aenima-bordered-icon-button-dimensions - ($aenima-bordered-icon-button-border-width * 2)
   button.bordered-icon
-    border: solid $aenima-bordered-icon-button-border-width $aenima-bordered-icon-button-color
+    align-items: center
     border-radius: 50%
+    border: solid $aenima-bordered-icon-button-border-width $aenima-bordered-icon-button-color
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.27), 0 0.1em 0 rgba(0,0,0,0.04), 0 0 12px rgba(0,0,0,0.21)
     color: $aenima-bordered-icon-button-color
     cursor: pointer
-    display: block
+    display: flex
     font-size: $aenima-bordered-icon-button-dimensions
+    height: $aenima-bordered-icon-button-dimensions
+    justify-content: center
+    line-height: $button-line-height
     margin-left: 1em
     margin-top: -2px
+    padding: 0
     text-align: center
     text-shadow: 0 1px 1px $aenima-bordered-icon-button-text-shadow
-    height: $aenima-bordered-icon-button-dimensions
     width: $aenima-bordered-icon-button-dimensions
-    line-height: $button-line-height
-    box-shadow: inset 0 1px 1px rgba(0,0,0,0.27), 0 0.1em 0 rgba(0,0,0,0.04), 0 0 12px rgba(0,0,0,0.21)
 
     .safari &
       line-height: $button-line-height - .1em
 
     i
-      top: .08em
-
-      .firefox &
-        top: 0.1em
-
-      .safari &
-        top: 0.07em
+      top: 0
