@@ -15,7 +15,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@jeremyckahn/lateralus-components": "^0.1.2",
+    "@jeremyckahn/lateralus-components": "^0.2.0",
     "keydrown": "~1.2.1",
     "lateralus": "~0.9.3",
     "rekapi": "^2.0.3"
